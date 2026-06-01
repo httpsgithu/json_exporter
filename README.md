@@ -1,4 +1,8 @@
 # JSON exporter
+
+⚠️ **This project is archived. No further updates will be made. You are free to fork and maintain your own version.**
+
+
 This Prometheus exporter can be used to export metrics from a REST HTTP(S) API
 that provides JSON documents. We use JSONPath (https://github.com/h2non/jsonpath-ng) to extract the metrics and
 regular expressions to extract tokens from a metric path and use it to create
@@ -133,8 +137,39 @@ logging:
 targets: []
 ```
 1. build the container image with `docker build -t json_exporter .`
-1. run the container with `docker run -it --rm -p 8000:8000  -v `pwd`:/workspace json_exporter /workspace/test.yaml`
+1. run the container with
+```bash
+docker run -it --rm -p 8000:8000  -v `pwd`:/workspace json_exporter /workspace/test.yaml
+```
 1. in a separate window check if you get metrics:
 ```bash
 curl -sv localhost:8000
 ```
+## Development
+Setup python:
+```bash
+uv python install 3.8
+uv python pin 3.8
+```
+Setup virtualenv:
+```bash
+uv sync
+```
+Run tests:
+```bash
+uv run pytest
+```
+### Before release
+* update `__version__` in `json_exporter/__init__.py`
+* update `Changelog.md`
+* run:
+```bash
+uv export --no-dev  --frozen --no-hashes > requirements.txt
+```
+* test package build:
+```bash
+uv build
+```
+### Release
+After new version has been merged into master:
+* create Github release
